@@ -36,3 +36,9 @@ resource "aws_vpc_peering_connection" "peer" {
 # peer_owner_id - to which account we need to connect, my account or other account
 # peer_vpc_id is default vpc id, vpc_id is new vpc created, connect both to current account
 # default_vpc_id is coming from main.tfvars, we don't hard code
+
+resource "aws_route" "default" {
+  route_table_id = aws_vpc.main.default_route_table_id
+  destination_cidr_block = "172.31.0.0/16"
+  vpc_peering_connection_id = aws_vpc_peering_connection.peer.id
+}
