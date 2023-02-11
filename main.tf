@@ -23,9 +23,13 @@ resource "aws_subnet" "main" {
 
 resource "aws_vpc_peering_connection" "peer" {
   peer_owner_id = data.aws_caller_identity.current.account_id
-  peer_vpc_id   = "vpc-0380e34c4b82831a1"
+  peer_vpc_id   = var.default_vpc_id
   vpc_id        = aws_vpc.main.id
   auto_accept   = true
+  tags = merge(
+    local.common_tags,
+    { Name = "${var.env}-peering" }
+  )
 }
 # we are connecting both vpc's, one is workstation and another newly created vpc
 # instead of hardcode owner id, we can get information from data.tf using aws_caller_identity module
