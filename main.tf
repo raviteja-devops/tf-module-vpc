@@ -35,3 +35,4 @@ resource "aws_vpc_peering_connection" "peer" {
 # instead of hardcode owner id, we can get information from data.tf using aws_caller_identity module
 # peer_owner_id - to which account we need to connect, my account or other account
 # peer_vpc_id is default vpc id, vpc_id is new vpc created, connect both to current account
+# default_vpc_id is coming from main.tfvars, we don't hard code
