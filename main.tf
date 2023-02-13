@@ -81,3 +81,13 @@ resource "aws_route_table" "public" {
   )
 }
 # creating public route table and to route table we need add peering connection and internet-gateway
+
+
+resource "aws_route_table_association" "public-rt-assoc" {
+  count          = length(aws_subnet.public)
+  subnet_id      = aws_subnet.public.*.id[count.index]
+  route_table_id = aws_route_table.public.id
+}
+# now we need to associate the Route-table with Sub-nets
+# we need to attach the route table to subnet manually
+# count refers the number of public subnets we created and it takes them all
