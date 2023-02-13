@@ -91,3 +91,25 @@ resource "aws_route_table_association" "public-rt-assoc" {
 # now we need to associate the Route-table with Sub-nets
 # we need to attach the route table to subnet manually
 # count refers the number of public subnets we created and it takes them all
+
+# TILL NOW WE CREATED A IGW AND TO THE TWO SUBNETS WE ASSOCIATED WITH PUBLIC ROUTE-TABLE THAT HAS IGW AND PEERING WITH WORKSTATION VPC
+
+
+resource "aws_eip" "ngw-eip" {
+  vpc      = true
+}
+# we need to first create a elastic ip, to create nat-gateway
+
+
+resource "aws_nat_gateway" "ngw" {
+  allocation_id = aws_eip.ngw-eip.id
+  subnet_id     = aws_subnet.public.*.id[0]
+
+  tags = merge(
+    local.common_tags,
+    { Name = "${var.env}-ngw" }
+  )
+
+  depends_on = [aws_internet_gateway.igw]
+}
+# creating nat-gateway
