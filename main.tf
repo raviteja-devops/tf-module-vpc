@@ -20,6 +20,7 @@ resource "aws_subnet" "public" {
   )
 }
 
+
 resource "aws_subnet" "private" {
   count = length(var.private_subnets_cidr)
   vpc_id     = aws_vpc.main.id
@@ -49,13 +50,6 @@ resource "aws_vpc_peering_connection" "peer" {
 # default_vpc_id is coming from main.tfvars, we don't hard code
 
 
-
-# we allowed traffic from main vpc to default vpc, but TRAFFIC FROM default vpc is not allowed TO MAIN VPC
-# we need to open traffic from both sides
-
-# we get data of default vpc in data.tf
-
-
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
 
@@ -64,3 +58,26 @@ resource "aws_internet_gateway" "igw" {
     { Name = "${var.env}-igw" }
   )
 }
+
+
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.main.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw.id
+  }
+# IGW cidr
+
+  route {
+    cidr_block = data.aws_vpc.default.cidr_block
+    vpc_peering_connection_id = aws_vpc_peering_connection.peer.id
+  }
+# peering connection cidr, peering with workstation vpc
+
+  tags = merge(
+    local.common_tags,
+    { Name = "${var.env}-public-routetable" }
+  )
+}
+# creating public route table and to route table we need add peering connection and internet-gateway
