@@ -122,11 +122,13 @@ resource "aws_route_table" "private" {
     cidr_block = data.aws_vpc.default.cidr_block
     vpc_peering_connection_id = aws_vpc_peering_connection.peer.id
   }
+# peering the both vpc's
 
   route {
     cidr_block = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.ngw.id
   }
+# entry to private subnets will be through nat gateway
 
   tags = merge(
     local.common_tags,
