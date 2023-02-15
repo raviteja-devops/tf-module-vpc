@@ -26,36 +26,6 @@ resource "aws_vpc_peering_connection" "peer" {
 # default_vpc_id is coming from main.tfvars, we don't hard code
 
 
-resource "aws_internet_gateway" "igw" {
-  vpc_id = aws_vpc.main.id
-
-  tags = merge(
-    local.common_tags,
-    { Name = "${var.env}-igw" }
-  )
-}
-
-
-#resource "aws_eip" "ngw-eip" {
-#  vpc      = true
-#}
-# we need to first create a elastic ip, to create nat-gateway
-
-
-#resource "aws_nat_gateway" "ngw" {
-#  allocation_id = aws_eip.ngw-eip.id
-#  subnet_id     = aws_subnet.public.*.id[0]
-
-#  tags = merge(
-#    local.common_tags,
-#    { Name = "${var.env}-ngw" }
-#  )
-
-#  depends_on = [aws_internet_gateway.igw]
-#}
-# creating nat-gateway
-
-
 resource "aws_route" "r" {
   route_table_id            = data.aws_vpc.default.main_route_table_id
   destination_cidr_block    = var.cidr_block
