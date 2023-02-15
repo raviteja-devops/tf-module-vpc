@@ -36,9 +36,9 @@ resource "aws_internet_gateway" "igw" {
 }
 
 
-resource "aws_eip" "ngw-eip" {
-  vpc      = true
-}
+#resource "aws_eip" "ngw-eip" {
+#  vpc      = true
+#}
 # we need to first create a elastic ip, to create nat-gateway
 
 
