@@ -60,5 +60,4 @@ resource "aws_nat_gateway" "ngw" {
     local.common_tags,
     { Name = "${var.env}-ngw" }
   )
-
 }
