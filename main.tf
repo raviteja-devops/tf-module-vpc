@@ -33,3 +33,13 @@ resource "aws_route" "r" {
 }
 # adding route in default vpc of workstation
 # we are getting route table id through datasource of default vpc in data.tf
+
+
+resource "aws_internet_gateway" "igw" {
+  vpc_id = aws_vpc.main.id
+
+  tags = merge(
+    local.common_tags,
+    { Name = "${var.env}-igw" }
+  )
+}
