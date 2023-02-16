@@ -1,6 +1,8 @@
 variable "cidr_block" {}
 variable "env" {}
 variable "default_vpc_id" {}
+variable "subnets" {}
+variable "availability_zone" {}
 
 # we are going to take a variable and give it
 # we have to send this cidr_block to roboshop-infra, main.tf
