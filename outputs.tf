@@ -9,4 +9,8 @@ output "vpc_peering_connection_id" {
 output "public_subnet_id" {
   value = module.public_subnets
 }
+
+output "private_subnet_id" {
+  value = module.private_subnets
+}
 # we are taking the public subnet id's from the all subnet id's from subnets/output.tf
