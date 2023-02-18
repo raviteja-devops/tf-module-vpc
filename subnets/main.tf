@@ -17,11 +17,17 @@ resource "aws_route_table" "route_table" {
     cidr_block = data.aws_vpc.default.cidr_block
     vpc_peering_connection_id = var.vpc_peering_connection_id
   }
-  # peering the both vpc's
+  # routing both vpc's
   tags = merge(
     local.common_tags,
     { Name = "${var.env}-${var.name}-route_table" }
   )
+
+  lifecycle {
+    ignore_changes = [
+      route,
+    ]
+  }
 }
 
 
